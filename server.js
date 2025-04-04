@@ -22,21 +22,27 @@ app.use(cors({
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-//rate limiting
+// rate limiting
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // Limit each IP to 100 requests per windowMs
+  max: 100, // Limit each IP to 100 requests per windowMs
+  validate: { trustProxy: false }
 });
 app.use('/chat', limiter);
 // Https enforcement
-app.enable('trust proxy');
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'production' && !req.secure) {
-    return res.redirect(`https://${req.headers.host}${req.url}`);
-  }
-  next();
-});
+// With this conditional configuration:
+app.set(
+    'trust proxy',
+    process.env.NODE_ENV === 'production' ? 1 : 'loopback'
+  );
+  
+  app.use((req, res, next) => {
+    if (process.env.NODE_ENV === 'production' && !req.secure) {
+      return res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+    next();
+  });
 // Logging configuration
 const logsDir = path.join(__dirname, 'logs');
 if (!fs.existsSync(logsDir)) {
