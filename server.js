@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // Enhanced CORS configuration
 const allowedOrigins = [
-    'https://chatbot-cwg0.onrender.com', // REPLACE WITH YOUR ACTUAL RENDER URL
+    'https://pleasework-s5q7.onrender.com', // REPLACE WITH YOUR ACTUAL RENDER URL
     'http://localhost:3000'
 ];
 
@@ -100,7 +100,7 @@ app.post('/chat', async (req, res) => {
                 headers: { 
                     'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
                     'Content-Type': 'application/json',
-                    'HTTP-Referer': 'https://chatbot-cwg0.onrender.com', //
+                    'HTTP-Referer': 'https://pleasework-s5q7.onrender.com', //
                     'X-Title': 'Quest Support Chatbot'
                 },
                 timeout: 10000
